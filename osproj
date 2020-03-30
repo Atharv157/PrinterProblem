@@ -19,9 +19,9 @@ def page(address):
 list_at = [ ] 
 list_bt = [ ]
 #addr = [ ]
-count  = input("enter the number of pdfs")
-#for i in xrange(count):
-   # addr.append(str(input("Enter the address")))
+#implementing for 3 PDFs
+count  = 3
+
 addr = []   
 addr.append("C:\Users\Atharv\Desktop\page.pdf")
 addr.append( "C:\Users\Atharv\Desktop\page2.pdf")
