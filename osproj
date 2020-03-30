@@ -1,0 +1,82 @@
+import PyPDF2
+def printer(address,x,y): 
+    pdfFileObj = open(address, 'rb') 
+    pdfReader = PyPDF2.PdfFileReader(pdfFileObj) 
+    while(y):
+        pageObj = pdfReader.getPage(x) 
+        print(pageObj.extractText()) 
+        x = x + 1
+        y = y - 1    
+    pdfFileObj.close() 
+    return x
+def page(address): 
+    pdfFileObj = open(address, 'rb') 
+    pdfReader = PyPDF2.PdfFileReader(pdfFileObj)  
+    p=pdfReader.numPages 
+    pdfFileObj.close() 
+    return p
+
+list_at = [ ] 
+list_bt = [ ]
+#addr = [ ]
+count  = input("enter the number of pdfs")
+#for i in xrange(count):
+   # addr.append(str(input("Enter the address")))
+addr = []   
+addr.append("C:\Users\Atharv\Desktop\page.pdf")
+addr.append( "C:\Users\Atharv\Desktop\page2.pdf")
+addr.append("C:\Users\Atharv\Desktop\page6.pdf")
+pgs = []
+for i in xrange(count):
+    pgs.append(page(addr[i]))
+print("Enter the arrival time for each pdf ")    
+for i in xrange(count):
+    list_at.append(int(input()))
+    
+
+temp=[]
+for i in xrange(count):
+    l= []
+    for j in xrange(3):
+        if(j==0):
+            l.append(list_at.pop())
+        elif(j==1):
+            l.append(pgs.pop())
+        elif(j==2):
+            l.append(addr.pop())
+            temp.append(l)
+temp.sort()
+list_at, list_bt,addr = map(list, zip(*temp))       
+time = list_at[0]
+counter = []
+for i in range(count):
+    counter.append(0)
+while(1):
+    if time < max(list_at):
+        bl = []
+        for item in list_at:
+            if item<=time and list_bt[list_at.index(item)]!=0:
+                bl.append(list_bt[list_at.index(item)])
+        ind = list_bt.index(min(bl))
+        list_bt[ind] = list_bt[ind] - 1 
+        print ("Process"+str(ind) +"     "+str(time)+"--->"+str(time + 1))
+        counter[ind]=printer(addr[ind],counter[ind] ,1)
+        time = time + 1
+
+        
+    else:
+        while(min(list_bt)==0):
+            list_bt[list_bt.index(0)]='0'
+        m = min(list_bt)
+        ind = list_bt.index(m)
+        print ("Process"+str(ind) +"     "+str(time)+"--->"+str(time + m))
+        counter[ind]=printer(addr[ind],counter[ind] ,m)
+        time = time + m
+        list_bt[ind] = '0'
+        add = 0
+        for item in list_bt:
+            add = add + int(item)
+        if not add:
+            break 
+    
+    
